@@ -239,7 +239,127 @@ public class PreprocessedData {
             }
         }
     }
+    //xml拆分函数
+    public boolean xml_functionSplit(String dir){
+        try{
+            //源文件路径
+            String para = dir.replaceAll("\\\\", "/");
 
+            String path = "python source/xml_to_code.py "+ para;
+
+            //Create a Process instance and execute commands
+            Process pr = Runtime.getRuntime().exec(path);
+
+            ////Get the result produced by executing the above commands
+            BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            String line = null;
+            String result = "";
+            while ((line = in.readLine()) != null) {
+                result += line;
+            }
+            pr.waitFor();
+            if (result.equals("False")) {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    //sourceXml预处理
+    public boolean xml_preprocess(String dir){
+        try {
+            String para = dir.replaceAll("\\\\", "/");
+            String para1 = para + "\\code";
+            String path = "python source/preprocess.py "+para1;
+
+            //Create a Process instance and execute commands
+            Process pr = Runtime.getRuntime().exec(path);
+
+            ////Get the result produced by executing the above commands
+            BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            String line = null;
+            String result = "";
+            while ((line = in.readLine()) != null) {
+                result += line;
+            }
+            pr.waitFor();
+            if (result.equals("False")) {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    //sourceXml类文本转为向量
+    public boolean xml_wordToVec(String dir, String total_vec) {
+        try {
+            // define the command string
+            String para1 = dir.replaceAll("\\\\", "/");
+            String para2 = " " + total_vec.replaceAll("\\\\", "/") + " ";
+
+            File[] files = new File(dir + "\\code_xml").listFiles();
+            List<File> file_list = Arrays.asList(files);
+
+            for (File file :
+                    file_list) {
+                String name = file.getName();
+                String path = "python source/Xml_WordToVec.py " + para1 + para2 + name;
+
+                //Create a Process instance and execute commands
+                Process pr = Runtime.getRuntime().exec(path);
+
+                ////Get the result produced by executing the above commands
+                BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+                String line = null;
+                String result = "";
+                while ((line = in.readLine()) != null) {
+                    result += line;
+                }
+                pr.waitFor();
+                if (result.equals("False")) {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    public void xml_predictResult(String dir, String cnn_path, ArrayList<String> result_list) {
+        try {
+            // define the command string
+            String para1 = dir.replaceAll("\\\\", "/") + " ";
+            String para2 = " " + cnn_path.replaceAll("\\\\", "/");
+
+            File[] files = new File(dir + "\\xml_vec").listFiles();
+            List<File> file_list = Arrays.asList(files);
+
+            for (File file :
+                    file_list) {
+                String name = file.getName();
+                String path = "python source/Xml_PredictResult.py " + para1 + name + para2;
+
+                //Create a Process instance and execute commands
+                Process pr = Runtime.getRuntime().exec(path);
+
+                ////Get the result produced by executing the above commands
+                BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+                String line = null;
+                String result = "";
+                while ((line = in.readLine()) != null) {
+                    result += line;
+                }
+                pr.waitFor();
+
+                result_list.add(result);
+                //System.out.println(result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public boolean wordToVec(String dir, String total_vec) {
         try {
             // define the command string
