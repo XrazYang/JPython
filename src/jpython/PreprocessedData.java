@@ -244,7 +244,7 @@ public class PreprocessedData {
         try{
             //源文件路径
             String para = dir.replaceAll("\\\\", "/");
-
+            //String para1 = para + "/"+project_name;
             String path = "python source/xml_to_code.py "+ para;
 
             //Create a Process instance and execute commands
@@ -270,7 +270,7 @@ public class PreprocessedData {
     public boolean xml_preprocess(String dir){
         try {
             String para = dir.replaceAll("\\\\", "/");
-            String para1 = para + "\\code";
+            String para1 = para + "\\codes";
             String path = "python source/preprocess.py "+para1;
 
             //Create a Process instance and execute commands
@@ -299,7 +299,7 @@ public class PreprocessedData {
             String para1 = dir.replaceAll("\\\\", "/");
             String para2 = " " + total_vec.replaceAll("\\\\", "/") + " ";
 
-            File[] files = new File(dir + "\\code_xml").listFiles();
+            File[] files = new File(dir + "\\codes_xml").listFiles();
             List<File> file_list = Arrays.asList(files);
 
             for (File file :

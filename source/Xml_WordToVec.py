@@ -10,7 +10,7 @@ def word_to_vec(dir, total_vec, file_name):
         return False
     model = gensim.models.KeyedVectors.load_word2vec_format(total_vec, binary=False)
 
-    file_path = dir + "/code_xml/" + file_name
+    file_path = dir + "/codes_xml/" + file_name
     if not os.path.exists(file_path):
         return False
 
