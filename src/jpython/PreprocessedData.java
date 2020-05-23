@@ -375,6 +375,7 @@ public class PreprocessedData {
                 String path = "python source/WordToVec.py " + para1 + para2 + name;
 
                 //Create a Process instance and execute commands
+                System.out.println(path);
                 Process pr = Runtime.getRuntime().exec(path);
 
                 ////Get the result produced by executing the above commands
@@ -395,11 +396,12 @@ public class PreprocessedData {
         return true;
     }
 
-    public void predictResult(String dir, String cnn_path, ArrayList<String> result_list) {
+    public void predictResult(String dir,ArrayList<String> result_list) {
         try {
             // define the command string
             String para1 = dir.replaceAll("\\\\", "/") + " ";
-            String para2 = " " + cnn_path.replaceAll("\\\\", "/");
+            //String para2 = " " + cnn_path.replaceAll("\\\\", "/");
+            String para2 = "source\\cnn_model";
 
             File[] files = new File(dir + "\\vec").listFiles();
             List<File> file_list = Arrays.asList(files);
