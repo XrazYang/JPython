@@ -26,7 +26,7 @@ def preprocess_source_file(src_file):
     # 添加空格，用于词法分析
     for s_f in src_file1:
         print(s_f)
-        d_f = des_file + "\\"+os.path.basename(s_f)
+        d_f = des_file + "/"+os.path.basename(s_f)
         convert_code_to_xml(s_f, './code.xml')
 
         tree = ET.parse('./code.xml')
@@ -159,7 +159,7 @@ def preprocess_source_file(src_file):
                         n.text = "function_call_name"
 
         tree.write('./code.xml', encoding="utf-8")
-        convert_xml_to_code('./code.xml', d_f)
+        convert_xml_to_code('./code.xml', des_file)
         if os.path.exists("./code.xml"):
             os.remove("./code.xml")
 def all_path(dirname):

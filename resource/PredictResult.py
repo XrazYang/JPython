@@ -9,7 +9,7 @@ data_max_row = 13
 
 def read_vec(dir, file_name):
     data_list = []
-    f = open(dir + "/xml_vec/" + file_name, encoding='utf-8')
+    f = open(dir + "/vec/" + file_name)
     line = f.readline()
     while line:
         num = list(map(str, line.split()))

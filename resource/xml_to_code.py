@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 import re
 import sys
 #代码转XML
+print (xml.__file__)
 def convert_code_to_xml(srcFile, desFile):
     commond = "srcml --position " + str(srcFile) + " -o " + str(desFile)
     rc, out = subprocess.getstatusoutput(commond)
@@ -15,6 +16,7 @@ def convert_code_to_xml(srcFile, desFile):
 
 #XML转代码
 def convert_xml_to_code(srcFile, desFile):
+    print(srcFile,desFile)
     commond = "srcml --position " + str(srcFile) + " -o " + str(desFile)
     rc, out = subprocess.getstatusoutput(commond)
     if rc == 0:
@@ -28,7 +30,7 @@ def read_xml(file_path_name,project_name):
     start_column = []
     end_line = []
     end_column = []
-    file_path_name1 = "H:/Test/"+os.path.basename(file_path_name)
+    file_path_name1 = file_path_name+"/srcml"
     if not os.path.exists(file_path_name1):
         os.makedirs(file_path_name1)
     main(file_path_name+"/"+project_name , file_path_name1)
@@ -42,9 +44,10 @@ def read_xml(file_path_name,project_name):
         os.makedirs(project_code_file_code_path)
     project_path = all_path(file_path_name1)
     for file in project_path:
-        file_name = file[file.rfind('\\')+1:]
-        convert_code_to_xml(file, file_name+".xml")
-        code = xml.dom.minidom.parse(file_name + ".xml")
+        file_name = os.path.basename(file)
+        print(file_name)
+        convert_code_to_xml(file, file+".xml")
+        code = xml.dom.minidom.parse(file + ".xml")
         functions = code.documentElement.getElementsByTagName("function")
         filename = code.documentElement.getAttribute("filename")
         language = code.documentElement.getAttribute("language")
@@ -54,7 +57,7 @@ def read_xml(file_path_name,project_name):
         xmlns_cpp = code.documentElement.getAttribute("xmlns:cpp")
         xmlns = code.documentElement.getAttribute("xmlns")
         i = 1
-        tree = ET.parse(file_name + ".xml")
+        tree = ET.parse(file + ".xml")
         root = tree.getroot()
         for child in root.iter():
             tag_name = child.tag
@@ -90,7 +93,7 @@ def read_xml(file_path_name,project_name):
                         e = re.findall(r"\d+\.?\d*", str(pos[len(pos) - 1].attrib))
                         end_line.append(e[0])
                         end_column.append(e[1])
-        for (func, func_name, s_l, s_c, e_l, e_c) in zip(functions, function_name, start_line, start_column, end_line,
+        for (func,func_name, s_l, s_c, e_l, e_c) in zip(functions, function_name,start_line, start_column, end_line,
                                                          end_column):
             impl = xml.dom.minidom.getDOMImplementation()
             dom = impl.createDocument(None, 'unit', None)
@@ -105,14 +108,14 @@ def read_xml(file_path_name,project_name):
             root.setAttribute('xmlns', xmlns)
             root.appendChild(func)
             # 把每个function分别存储为XML文件
-            f = open(project_xml_file_xml_path + "/" + file_name + '#' + func_name+'@'+ str(i) + '.xml', 'w',encoding='utf-8')
+            f = open(project_xml_file_xml_path + "/"+ file_name + '#'+ func_name+'@'+ str(i) + '.xml', 'w',encoding="utf8")
+
             dom.writexml(f)
             f.close()
-            convert_xml_to_code(project_xml_file_xml_path + "/" + file_name + '#' + func_name +'@'+  str(i) + '.xml',
-                                project_code_file_code_path + "/" + file_name + '#' + func_name +'@'+ str(i) +  '.cpp')
+            convert_xml_to_code(project_xml_file_xml_path +"/"+ file_name + '#'+  func_name +'@'+  str(i) + '.xml',
+                                project_code_file_code_path + "/"+ file_name + '#'+ func_name +'@'+ str(i) +  '.cpp')
 
-            function_code_file = project_code_file_code_path+ "/" + file_name + '#' + func_name +'@'+  str(i) +  '.cpp'
-
+            function_code_file = project_code_file_code_path + "/"+ file_name + '#'+ func_name +'@'+  str(i) +  '.cpp'
             function_code_list.append(function_code_file)
 
             i = i + 1
@@ -146,7 +149,7 @@ def get_MD5(file_path):
 
 
 def main(path, out):
-    out_path = out+"\\"+os.path.basename(path)
+    out_path = out+"/"+os.path.basename(path)
     if not os.path.exists(out_path):
         os.makedirs(out_path)
     for files in os.listdir(path):
@@ -164,3 +167,4 @@ def main(path, out):
             main(name, back_name)
 if __name__ == '__main__':
     read_xml(sys.argv[1],sys.argv[2])
+    #read_xml("/home/lost","clang-tidy")

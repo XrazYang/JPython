@@ -28,13 +28,13 @@ public class FunctionSplitWithListener extends CPP14BaseListener {
         str = str.replaceAll(" +", " ");
         //函数拆分
         try {
-            String path = dir + "\\code";
+            String path = dir + "/code";
             File file = new File(path);
             if (!file.exists()) {
                 file.mkdir();
             }
 
-            FileWriter writer = new FileWriter(path + "\\" + file_name + "@" + count + ".cpp");
+            FileWriter writer = new FileWriter(path + "/" + file_name + "@" + count + ".cpp");
             writer.write(str);
             writer.close();
             count++;

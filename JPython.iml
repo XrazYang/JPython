@@ -7,32 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Javalib/antlr-4.7.2-complete.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Javalib/jtar-1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Javalib/javatar-2.5.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="antlr-4.7.2-complete" level="project" />
+    <orderEntry type="library" name="jtar-1.1" level="project" />
   </component>
 </module>

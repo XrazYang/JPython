@@ -189,14 +189,19 @@ public class PreprocessedData {
         }
     }
 
+    /**
+     * antrl4 function Split
+     * @param dir root path
+     * @param project_name
+     */
     public void functionSplit(String dir, String project_name) {
-        File[] files = new File(dir + "\\" + project_name).listFiles();
+        File[] files = new File(dir + "/" + project_name).listFiles();
         List<File> file_list = Arrays.asList(files);
 
         for (File file :
                 file_list) {
             String name = file.getName();
-            if (file.isFile() && (name.endsWith(".cpp") || name.endsWith(".h") || name.endsWith(".c") || name.endsWith(".hpp"))) {
+            if (file.isFile() && (name.endsWith(".CPP")||name.endsWith(".C")||name.endsWith(".cpp") || name.endsWith(".h") || name.endsWith(".c") || name.endsWith(".hpp"))) {
                 try {
                     ANTLRFileStream input = new ANTLRFileStream(file.getAbsolutePath());
                     CPP14Lexer lexer = new CPP14Lexer(input);
@@ -215,8 +220,12 @@ public class PreprocessedData {
         }
     }
 
+    /**
+     * function preprocess
+     * @param dir root path
+     */
     public void functonPreprocess(String dir) {
-        File[] files = new File(dir + "\\code").listFiles();
+        File[] files = new File(dir + "/code").listFiles();
         List<File> file_list = Arrays.asList(files);
 
         for (File file :
@@ -239,14 +248,15 @@ public class PreprocessedData {
             }
         }
     }
+
     //xml拆分函数
-    public boolean xml_functionSplit(String dir){
+    public boolean xml_functionSplit(String dir,String python_path,String project_name){
         try{
             //源文件路径
-            String para = dir.replaceAll("\\\\", "/");
-            //String para1 = para + "/"+project_name;
-            String path = "python source/xml_to_code.py "+ para;
+            python_path = " "+python_path+" ";
 
+            String path = "python3 "+python_path+ dir+" "+project_name ;
+            System.out.println(path);
             //Create a Process instance and execute commands
             Process pr = Runtime.getRuntime().exec(path);
 
@@ -266,12 +276,15 @@ public class PreprocessedData {
         }
         return true;
     }
+
+
     //sourceXml预处理
-    public boolean xml_preprocess(String dir){
+    public boolean xml_preprocess(String dir,String python_path){
         try {
-            String para = dir.replaceAll("\\\\", "/");
-            String para1 = para + "\\codes";
-            String path = "python source/preprocess.py "+para1;
+
+            python_path = " "+python_path+" ";
+            String para1 = dir + "/codes";
+            String path = "python3 "+python_path+para1;
 
             //Create a Process instance and execute commands
             Process pr = Runtime.getRuntime().exec(path);
@@ -293,89 +306,90 @@ public class PreprocessedData {
         return true;
     }
     //sourceXml类文本转为向量
-    public boolean xml_wordToVec(String dir, String total_vec) {
+    public boolean xml_wordToVec(String dir, String python_path,String total_vec) {
         try {
             // define the command string
-            String para1 = dir.replaceAll("\\\\", "/");
-            String para2 = " " + total_vec.replaceAll("\\\\", "/") + " ";
+            python_path = " "+python_path+" ";
+            String para2 = " " + total_vec+ " ";
 
-            File[] files = new File(dir + "\\codes_xml").listFiles();
+            File[] files = new File(dir + "/codes_xml").listFiles();
             List<File> file_list = Arrays.asList(files);
 
             for (File file :
                     file_list) {
                 String name = file.getName();
-                String path = "python source/Xml_WordToVec.py " + para1 + para2 + name;
-
-                //Create a Process instance and execute commands
-                Process pr = Runtime.getRuntime().exec(path);
-
-                ////Get the result produced by executing the above commands
-                BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-                String line = null;
-                String result = "";
-                while ((line = in.readLine()) != null) {
-                    result += line;
-                }
-                pr.waitFor();
-                if (result.equals("False")) {
-                    return false;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-    public void xml_predictResult(String dir, String cnn_path, ArrayList<String> result_list) {
-        try {
-            // define the command string
-            String para1 = dir.replaceAll("\\\\", "/") + " ";
-            String para2 = " " + cnn_path.replaceAll("\\\\", "/");
-
-            File[] files = new File(dir + "\\xml_vec").listFiles();
-            List<File> file_list = Arrays.asList(files);
-
-            for (File file :
-                    file_list) {
-                String name = file.getName();
-                String path = "python source/Xml_PredictResult.py " + para1 + name + para2;
-
-                //Create a Process instance and execute commands
-                Process pr = Runtime.getRuntime().exec(path);
-
-                ////Get the result produced by executing the above commands
-                BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-                String line = null;
-                String result = "";
-                while ((line = in.readLine()) != null) {
-                    result += line;
-                }
-                pr.waitFor();
-
-                result_list.add(result);
-                //System.out.println(result);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public boolean wordToVec(String dir, String total_vec) {
-        try {
-            // define the command string
-            String para1 = dir.replaceAll("\\\\", "/");
-            String para2 = " " + total_vec.replaceAll("\\\\", "/") + " ";
-
-            File[] files = new File(dir + "\\des_code").listFiles();
-            List<File> file_list = Arrays.asList(files);
-
-            for (File file :
-                    file_list) {
-                String name = file.getName();
-                String path = "python source/WordToVec.py " + para1 + para2 + name;
-
-                //Create a Process instance and execute commands
+                String path = "python2 "+python_path + dir + para2 ;
                 System.out.println(path);
+                //Create a Process instance and execute commands
+                Process pr = Runtime.getRuntime().exec(path);
+                ////Get the result produced by executing the above commands
+                BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+                String line = null;
+                String result = "";
+                while ((line = in.readLine()) != null) {
+                    result += line;
+                }
+                pr.waitFor();
+                if (result.equals("False")) {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    public void xml_predictResult(String dir, String python_path,String cnn_path, ArrayList<String> result_list) {
+        try {
+            // define the command string
+            python_path = " "+python_path+" ";
+            String para1 = dir + " ";
+            String para2 = " " + cnn_path+" ";
+
+            File[] files = new File(dir + "/xml_vec").listFiles();
+            List<File> file_list = Arrays.asList(files);
+
+            for (File file :
+                    file_list) {
+                String name = file.getName();
+                String path = "python2 "+python_path + para1 + name + para2;
+                System.out.println(path);
+                //Create a Process instance and execute commands
+                Process pr = Runtime.getRuntime().exec(path);
+
+                ////Get the result produced by executing the above commands
+                BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+                String line = null;
+                String result = "";
+                while ((line = in.readLine()) != null) {
+                    result += line;
+                }
+                pr.waitFor();
+
+                result_list.add(result);
+                //System.out.println(result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public boolean wordToVec(String dir,String python_path,String total_vec_path) {
+        try {
+
+            File[] files = new File(dir + "/des_code").listFiles();
+            List<File> file_list = Arrays.asList(files);
+
+            python_path = " "+python_path+" ";
+            total_vec_path = " "+total_vec_path+" ";
+
+            for (File file :
+                    file_list) {
+                String name = file.getName();
+                String path = "python2 "+python_path + dir + total_vec_path ;
+
+                //Create a Process instance and execute commands
                 Process pr = Runtime.getRuntime().exec(path);
 
                 ////Get the result produced by executing the above commands
@@ -396,23 +410,22 @@ public class PreprocessedData {
         return true;
     }
 
-    public void predictResult(String dir,ArrayList<String> result_list) {
+    public void predictResult(String dir,String python_path,String cnn_path,ArrayList<String> result_list) {
         try {
-            // define the command string
-            String para1 = dir.replaceAll("\\\\", "/") + " ";
-            //String para2 = " " + cnn_path.replaceAll("\\\\", "/");
-            String para2 = "source\\cnn_model";
-
-            File[] files = new File(dir + "\\vec").listFiles();
+            python_path = " "+python_path+" ";
+            cnn_path = " "+cnn_path+" ";
+            File[] files = new File(dir + "/vec").listFiles();
             List<File> file_list = Arrays.asList(files);
 
             for (File file :
                     file_list) {
                 String name = file.getName();
-                String path = "python source/PredictResult.py " + para1 + name + para2;
+                String para1 = dir + " ";
+                String path = "python2 "+python_path + para1 + name + cnn_path;
 
                 //Create a Process instance and execute commands
                 Process pr = Runtime.getRuntime().exec(path);
+                System.out.println(path);
 
                 ////Get the result produced by executing the above commands
                 BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
@@ -422,9 +435,7 @@ public class PreprocessedData {
                     result += line;
                 }
                 pr.waitFor();
-
                 result_list.add(result);
-                //System.out.println(result);
             }
         } catch (Exception e) {
             e.printStackTrace();

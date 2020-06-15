@@ -68,12 +68,12 @@ public class CPP14ValuesListener extends CPP14BaseListener {
 
             //函数拆分
             try {
-                String path = dir + "\\des_code";
+                String path = dir + "/des_code";
                 File file = new File(path);
                 if (!file.exists()) {
                     file.mkdir();
                 }
-                FileWriter writer = new FileWriter(path + "\\" + file_name);
+                FileWriter writer = new FileWriter(path + "/" + file_name);
                 writer.write(str);
                 writer.close();
             } catch (IOException e) {

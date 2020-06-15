@@ -5,11 +5,7 @@ import os
 
 
 # 将预处理后的代码生成向量矩阵
-def word_to_vec(dir, total_vec, file_name):
-    if not os.path.exists(total_vec):
-        return False
-    model = gensim.models.KeyedVectors.load_word2vec_format(total_vec, binary=False)
-
+def word_to_vec(dir, model, file_name):
     file_path = dir + "/des_code/" + file_name
     if not os.path.exists(file_path):
         return False
@@ -43,6 +39,14 @@ def word_to_vec(dir, total_vec, file_name):
 
 
 if __name__ == '__main__':
-    result = word_to_vec(sys.argv[1], sys.argv[2], sys.argv[3])
-    print (result)
-    # word_to_vec("D:\\test-1\\result", "D:\\jthonTest\source\\VDISC_total_vec.txt", "test__0.cpp")
+    # total_vec = "D:\\CnnPredict\\resource\\VDISC_total_vec.txt"
+    total_vec = sys.argv[2]
+    # dir = "D:\\test-1\\result" + "\\des_code\\"
+    dir = sys.argv[1] + "/des_code/"
+    if os.path.exists(total_vec):
+        model = gensim.models.KeyedVectors.load_word2vec_format(total_vec, binary=False)
+        file_list = os.listdir(dir)
+        for name in file_list:
+            # word_to_vec("D:\\test-1\\result", model, name)
+            print(name)
+            word_to_vec(sys.argv[1], model, name)

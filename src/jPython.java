@@ -2,28 +2,30 @@ import jpython.PreprocessedData;
 
 import java.util.ArrayList;
 
+
 public class jPython {
     public static void main(String[] args) throws Exception {
         PreprocessedData pre =  new PreprocessedData();
-//        pre.xml_functionSplit("D:\\xml_to_code");
-//        pre.xml_preprocess("D:\\xml_to_code");
-//        pre.unTarGz("D:\\c.tar.gz","D:\\test-1");
-//        pre.xml_preprocess("D:\\test-1");
-//        ArrayList<String> list = new ArrayList<>();
-//        pre.xml_wordToVec("D:\\test-1","H:\\h\\JPython\\source\\xml_total_vec.txt");
-//        pre.xml_predictResult("D:\\test-1","H:\\h\\JPython\\source\\xml_cnn_model",list);
-//        for (int i = 0; i < list.size(); i++) {
-//            System.out.println(list.get(i));
-//        }
-//        String parentFile = "H:\\test-1";
-//
-//        pre.functionSplit("H:\\test-1","clang-tidy");
 
-        //pre.wordToVec("C:\\Users\\腹黑熊\\AppData\\Local\\Temp\\tomcat-docbase.5905781022693366222.8080\\uploadfile\\20200522094103554","H:\\Puap\\source\\VDISC_total_vec.txt");
+    //    pre.unZip("/tmp/tomcat-docbase.3221568988904081851.8080/uploadfile/20200522180426643/clang-tidy.zip","/tmp/tomcat-docbase.3221568988904081851.8080/uploadfile/20200522180426643");
+//        pre.functionSplit("/home/sd/Test_items","staticTest");
+//        pre.functonPreprocess("/home/sd/Test_items");
+//
+//        pre.wordToVec("/home/sd/Test_items","/home/sd/JPython/resource/WordToVec.py","/home/sd/JPython/resource/VDISC_total_vec.txt");
+//
+//        ArrayList<String> list = new ArrayList<>();
+//        pre.predictResult("/home/sd/Test_items","/home/sd/JPython/resource/PredictResult.py","/home/sd/JPython/resource/cnn_model",list);
+//        System.out.println(list);
+//
+        pre.xml_functionSplit("/home/sd/Test_items","/home/sd/JPython/resource/xml_to_code.py","staticTest");
+        pre.xml_preprocess("/home/sd/Test_items/srcml","/home/sd/JPython/resource/preprocess.py");
+
+        pre.xml_wordToVec("/home/sd/Test_items/srcml","/home/sd/JPython/resource/Xml_WordToVec.py","/home/sd/IdeaProjects/Puap/resource/xml_total_vec.txt");
         ArrayList<String> list = new ArrayList<>();
- pre.predictResult("C:\\Users\\腹黑熊\\AppData\\Local\\Temp\\tomcat-docbase.5905781022693366222.8080\\uploadfile\\20200522094103554",list);
-  System.out.println(list);
+       pre.xml_predictResult("/home/sd/Test_items/srcml","/home/sd/JPython/resource/Xml_PredictResult.py","/home/sd/IdeaProjects/Puap/resource/xml_cnn_model",list);
+        System.out.println(list);
     }
+
 
 }
 
